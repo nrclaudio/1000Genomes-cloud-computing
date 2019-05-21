@@ -125,6 +125,4 @@ hdfs_slave1_1320" | sudo tee /home/ubuntu/hadoop/etc/hadoop/workers
 cd
 scp hadoop-*.tar.gz hdfs_slave2_1320:/home/ubuntu/
 scp hadoop-*.tar.gz hdfs_slave1_1320:/home/ubuntu/
-for node in hdfs_slave1_1320 hdfs_slave2_1320; do
-    scp ~/hadoop/etc/hadoop/* $node:/home/ubuntu/hadoop/etc/hadoop/;
-done
+
