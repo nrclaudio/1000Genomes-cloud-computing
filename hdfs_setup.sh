@@ -1,8 +1,6 @@
 #!/bin/sh
 sudo apt update
 sudo apt-get install -y openjdk-8-jdk
-IP=`curl ifconfig.me`
-HOSTNAME=`hostname`
 cd
 echo "130.238.29.217  master-1320-2
 130.238.29.198  hdfs_slave2_1320
@@ -26,18 +24,18 @@ echo "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre/" | sudo tee -a /ho
 
 # On each node update home/ubuntu/hadoop/etc/hadoop/core-site.xml you want to set the NameNode location to HOSTNAME on port 9000
 
-echo "<?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+echo "<?xml version='1.0' encoding='UTF-8'?>
+<?xml-stylesheet type='text/xsl' href='configuration.xsl'?>
     <configuration>
         <property>
             <name>fs.default.name</name>
-            <value>hdfs://${HOSTNAME}:9000</value>
+            <value>hdfs://master-1320-2:9000</value>
         </property>
     </configuration>" | sudo tee /home/ubuntu/hadoop/etc/hadoop/core-site.xml
 
 
-echo "<?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+echo "<?xml version='1.0' encoding='UTF-8'?>
+<?xml-stylesheet type='text/xsl' href='configuration.xsl'?>
 <configuration>
     <property>
             <name>dfs.namenode.name.dir</name>
@@ -57,8 +55,8 @@ echo "<?xml version="1.0" encoding="UTF-8"?>
 
 #The last property, dfs.replication, indicates how many times data is replicated in the cluster. You can set 2 to have all the data duplicated on the two nodes. Don’t enter a value higher than the actual number of slave nodes.
 
-echo "<?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+echo "<?xml version='1.0' encoding='UTF-8'?>
+<?xml-stylesheet type='text/xsl' href='configuration.xsl'?>
 <configuration>
     <property>
             <name>mapreduce.framework.name</name>
@@ -80,7 +78,7 @@ echo "<?xml version="1.0" encoding="UTF-8"?>
     </property>
 </configuration>" | sudo tee /home/ubuntu/hadoop/etc/hadoop/mapred-site.xml
 
-echo "<?xml version="1.0"?>
+echo "<?xml version='1.0'?>
 <configuration>
     <property>
             <name>yarn.acl.enable</name>
@@ -89,7 +87,7 @@ echo "<?xml version="1.0"?>
 
     <property>
             <name>yarn.resourcemanager.hostname</name>
-            <value>${HOSTNAME}</value>
+            <value>$master-1320-2</value>
     </property>
 
     <property>
@@ -121,7 +119,12 @@ echo "<?xml version="1.0"?>
 echo "hdfs_slave2_1320
 hdfs_slave1_1320" | sudo tee /home/ubuntu/hadoop/etc/hadoop/workers
 
+
+#Before this step we have to configure ssh between the machines, to do that we create a new keypair on the master machine and transfer the public key to every machine. In order to sshd-copy-id to the machines we first need to disable keypair authentication (enabling password authentication) on the slaves. to do that we can edit a line on sshd_config. Then we set up a password for the root user in linux.
+
 cd
 scp hadoop-*.tar.gz hdfs_slave2_1320:/home/ubuntu/
 scp hadoop-*.tar.gz hdfs_slave1_1320:/home/ubuntu/
-
+for node in hdfs_slave1_1320 hdfs_slave2_1320; do
+    scp ~/hadoop/etc/hadoop/* $node:/home/ubuntu/hadoop/etc/hadoop/;
+done
