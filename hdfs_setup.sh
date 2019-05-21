@@ -16,9 +16,9 @@ ff02::2 ip6-allrouters
 ff02::3 ip6-allhosts" | tee /etc/hosts
 
 cd
-wget http://apache.mindstudios.com/hadoop/common/hadoop-2.8.1/hadoop-2.8.1.tar.gz
-tar -xzf hadoop-2.8.1.tar.gz
-mv hadoop-2.8.1 hadoop
+wget http://apache.mirrors.spacedump.net/hadoop/common/hadoop-2.8.5/hadoop-2.8.5.tar.gz
+tar -xzf hadoop-2.8.5.tar.gz
+mv hadoop-2.8.5 hadoop
 
 echo 'PATH=/home/ubuntu/hadoop/bin:/home/ubuntu/hadoop/sbin:$PATH' | sudo tee -a /home/ubuntu/.profile
 echo "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre/" | sudo tee -a /home/ubuntu/hadoop/etc/hadoop/hadoop-env.sh
