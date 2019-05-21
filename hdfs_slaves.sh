@@ -2,6 +2,8 @@
 sudo apt update
 sudo apt-get install -y openjdk-8-jdk
 cd
+tar -xzf hadoop-3.1.2.tar.gz
+mv hadoop-3.1.2 hadoop
 echo 'PATH=/home/ubuntu/hadoop/bin:/home/ubuntu/hadoop/sbin:$PATH' | sudo tee -a /home/ubuntu/.profile
 echo "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre/" | sudo tee -a /home/ubuntu/hadoop/etc/hadoop/hadoop-env.sh
 
