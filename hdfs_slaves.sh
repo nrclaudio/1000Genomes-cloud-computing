@@ -2,8 +2,8 @@
 sudo apt update
 sudo apt-get install -y openjdk-8-jdk
 cd
-tar -xzf hadoop-3.1.2.tar.gz
-mv hadoop-3.1.2 hadoop
+tar -xzf hadoop-2.8.1.tar.gz
+mv hadoop-2.8.1 hadoop
 echo 'PATH=/home/ubuntu/hadoop/bin:/home/ubuntu/hadoop/sbin:$PATH' | sudo tee -a /home/ubuntu/.profile
 echo "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre/" | sudo tee -a /home/ubuntu/hadoop/etc/hadoop/hadoop-env.sh
 
@@ -103,6 +103,7 @@ echo "<?xml version='1.0'?>
 
 echo "hdfs_slave2_1320
 hdfs_slave1_1320" | sudo tee /home/ubuntu/hadoop/etc/hadoop/workers
+echo "master-1320-2" | sudo tee /home/ubuntu/hadoop/etc/hadoop/masters
 
 
 #Before this step we have to configure ssh between the machines, to do that we create a new keypair on the master machine and transfer the public key to every machine. In order to sshd-copy-id to the machines we first need to disable keypair authentication (enabling password authentication) on the slaves. to do that we can edit a line on sshd_config. Then we set up a password for the root user in linux.
