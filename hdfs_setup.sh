@@ -123,6 +123,6 @@ echo "130.238.29.217" | sudo tee /home/ubuntu/hadoop/etc/hadoop/masters
 #Before this step we have to configure ssh between the machines, to do that we create a new keypair on the master machine and transfer the public key to every machine. In order to sshd-copy-id to the machines we first need to disable keypair authentication (enabling password authentication) on the slaves. to do that we can edit a line on sshd_config. Then we set up a password for the root user in linux.
 
 cd
-scp hadoop-*.tar.gz hdfs_slave2_1320:/home/ubuntu/
-scp hadoop-*.tar.gz hdfs_slave1_1320:/home/ubuntu/
+scp hadoop-*.tar.gz hdfs-slave2-1320:/home/ubuntu/
+scp hadoop-*.tar.gz hdfs-slave1-1320:/home/ubuntu/
 
