@@ -2,6 +2,18 @@
 sudo apt update
 sudo apt-get install -y openjdk-8-jdk
 cd
+echo "127.0.0.1 localhost
+130.238.29.217 master-1320-2
+130.238.29.179 hdfs-slave1-1320
+130.238.29.198 hdfs-slave2-1320
+
+# The following lines are desirable for IPv6 capable hosts
+::1 ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+ff02::3 ip6-allhosts" | sudo tee /etc/hosts
 tar -xzf hadoop-2.8.5.tar.gz
 mv hadoop-2.8.5 hadoop
 echo 'PATH=/home/ubuntu/hadoop/bin:/home/ubuntu/hadoop/sbin:$PATH' | sudo tee -a /home/ubuntu/.profile
@@ -16,6 +28,10 @@ echo "<?xml version='1.0' encoding='UTF-8'?>
             <name>fs.default.name</name>
             <value>hdfs://master-1320-2:9000</value>
         </property>
+        <property>
+            <name>hadoop.tmp.dir</name>
+            <value>/home/ubuntu/hdfs/tmp</value>
+        </property>
     </configuration>" | sudo tee /home/ubuntu/hadoop/etc/hadoop/core-site.xml
 
 
@@ -24,12 +40,14 @@ echo "<?xml version='1.0' encoding='UTF-8'?>
 <configuration>
     <property>
             <name>dfs.namenode.name.dir</name>
-            <value>/home/ubuntu/data/nameNode</value>
+            <value>file:/home/ubuntu/data/nameNode</value>
+            <final>true</final>
     </property>
 
     <property>
             <name>dfs.datanode.data.dir</name>
-            <value>/home/ubuntu/data/dataNode</value>
+            <value>file:/home/ubuntu/data/dataNode</value>
+            <final>true</final>
     </property>
 
     <property>
@@ -101,8 +119,8 @@ echo "<?xml version='1.0'?>
 </configuration>
 " | sudo tee /home/ubuntu/hadoop/etc/hadoop/yarn-site.xml
 
-echo "hdfs_slave2_1320
-hdfs_slave1_1320" | sudo tee /home/ubuntu/hadoop/etc/hadoop/workers
+echo "hdfs-slave2-1320
+hdfs-slave1-1320" | sudo tee /home/ubuntu/hadoop/etc/hadoop/slaves
 echo "master-1320-2" | sudo tee /home/ubuntu/hadoop/etc/hadoop/masters
 
 
