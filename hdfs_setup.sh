@@ -16,18 +16,22 @@ ff02::2 ip6-allrouters
 ff02::3 ip6-allhosts" | sudo tee /etc/hosts
 
 cd
-wget http://apache.mirrors.spacedump.net/hadoop/common/hadoop-2.8.5/hadoop-2.8.5.tar.gz
-tar -xzf hadoop-2.8.5.tar.gz
-mv hadoop-2.8.5 hadoop
+wget http://apache.mirrors.spacedump.net/hadoop/common/hadoop-3.2.0/hadoop-3.2.0.tar.gz
+tar -xzf hadoop-3.2.0.tar.gz
+mv hadoop-3.2.0 hadoop
 
-echo 'PATH=/home/ubuntu/hadoop/bin:/home/ubuntu/hadoop/sbin:$PATH' | sudo tee -a /home/ubuntu/.profile
+echo 'export HADOOP_HOME=”/home/ubuntu/hadoop”
+export PATH=$PATH:$HADOOP_HOME/bin
+export PATH=$PATH:$HADOOP_HOME/sbin
+export HADOOP_MAPRED_HOME=${HADOOP_HOME}
+export HADOOP_COMMON_HOME=${HADOOP_HOME}
+export HADOOP_HDFS_HOME=${HADOOP_HOME}
+export YARN_HOME=${HADOOP_HOME}' | sudo tee -a ~/.bashrc
+source ~/.bashrc
 echo "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre/" | sudo tee -a /home/ubuntu/hadoop/etc/hadoop/hadoop-env.sh
-
 # On each node update home/ubuntu/hadoop/etc/hadoop/core-site.xml you want to set the NameNode location to HOSTNAME on port 9000
 
-echo "<?xml version='1.0' encoding='UTF-8'?>
-<?xml-stylesheet type='text/xsl' href='configuration.xsl'?>
-    <configuration>
+echo "<configuration>
         <property>
             <name>fs.defaultFS</name>
             <value>hdfs://130.238.29.217:9000</value>
@@ -39,9 +43,7 @@ echo "<?xml version='1.0' encoding='UTF-8'?>
     </configuration>" | sudo tee /home/ubuntu/hadoop/etc/hadoop/core-site.xml
 
 9868
-echo "<?xml version='1.0' encoding='UTF-8'?>
-<?xml-stylesheet type='text/xsl' href='configuration.xsl'?>
-<configuration>
+echo "<configuration>
     <property>
             <name>dfs.namenode.name.dir</name>
             <value>file:///home/ubuntu/data/</value>
@@ -63,9 +65,7 @@ sudo chown ubuntu:ubuntu -R /home/ubuntu/data/
 chmod 700 /home/ubuntu/data/
 #The last property, dfs.replication, indicates how many times data is replicated in the cluster. You can set 2 to have all the data duplicated on the two nodes. Don’t enter a value higher than the actual number of slave nodes.
 
-echo "<?xml version='1.0' encoding='UTF-8'?>
-<?xml-stylesheet type='text/xsl' href='configuration.xsl'?>
-<configuration>
+echo "<configuration>
     <property>
             <name>mapreduce.framework.name</name>
             <value>yarn</value>
@@ -90,8 +90,7 @@ echo "<?xml version='1.0' encoding='UTF-8'?>
     </property>
 </configuration>" | sudo tee /home/ubuntu/hadoop/etc/hadoop/mapred-site.xml
 
-echo "<?xml version='1.0'?>
-<configuration>
+echo "<configuration>
     <property>
             <name>yarn.acl.enable</name>
             <value>0</value>
