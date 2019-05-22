@@ -20,15 +20,9 @@ wget http://apache.mirrors.spacedump.net/hadoop/common/hadoop-3.2.0/hadoop-3.2.0
 tar -xzf hadoop-3.2.0.tar.gz
 mv hadoop-3.2.0 hadoop
 
-echo 'export HADOOP_HOME=”/home/ubuntu/hadoop”
-export PATH=$PATH:$HADOOP_HOME/bin
-export PATH=$PATH:$HADOOP_HOME/sbin
-export HADOOP_MAPRED_HOME=${HADOOP_HOME}
-export HADOOP_COMMON_HOME=${HADOOP_HOME}
-export HADOOP_HDFS_HOME=${HADOOP_HOME}
-export YARN_HOME=${HADOOP_HOME}' | sudo tee -a ~/.bashrc
-source ~/.bashrc
+echo 'PATH=/home/ubuntu/hadoop/bin:/home/ubuntu/hadoop/sbin:$PATH' | sudo tee -a /home/ubuntu/.profile
 echo "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre/" | sudo tee -a /home/ubuntu/hadoop/etc/hadoop/hadoop-env.sh
+
 # On each node update home/ubuntu/hadoop/etc/hadoop/core-site.xml you want to set the NameNode location to HOSTNAME on port 9000
 
 echo "<configuration>
@@ -135,6 +129,6 @@ echo "master-1320-2" | sudo tee /home/ubuntu/hadoop/etc/hadoop/masters
 #Before this step we have to configure ssh between the machines, to do that we create a new keypair on the master machine and transfer the public key to every machine. In order to sshd-copy-id to the machines we first need to disable keypair authentication (enabling password authentication) on the slaves. to do that we can edit a line on sshd_config. Then we set up a password for the root user in linux.
 
 cd
-scp hadoop-*.tar.gz hdfs_slave2_1320:/home/ubuntu/
-scp hadoop-*.tar.gz hdfs_slave1_1320:/home/ubuntu/
+scp hadoop-*.tar.gz hdfs-slave2-1320:/home/ubuntu/
+scp hadoop-*.tar.gz hdfs-slave1-1320:/home/ubuntu/
 

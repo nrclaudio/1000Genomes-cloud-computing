@@ -6,17 +6,11 @@ echo "127.0.0.1 localhost
 130.238.29.217 master-1320-2
 130.238.29.179 hdfs-slave1-1320
 130.238.29.198 hdfs-slave2-1320" | sudo tee /etc/hosts
+
 tar -xzf hadoop-3.2.0.tar.gz
 mv hadoop-3.2.0 hadoop
 
-echo 'export HADOOP_HOME=”/home/ubuntu/hadoop”
-export PATH=$PATH:$HADOOP_HOME/bin
-export PATH=$PATH:$HADOOP_HOME/sbin
-export HADOOP_MAPRED_HOME=${HADOOP_HOME}
-export HADOOP_COMMON_HOME=${HADOOP_HOME}
-export HADOOP_HDFS_HOME=${HADOOP_HOME}
-export YARN_HOME=${HADOOP_HOME}' | sudo tee -a ~/.bashrc
-source ~/.bashrc
+echo 'PATH=/home/ubuntu/hadoop/bin:/home/ubuntu/hadoop/sbin:$PATH' | sudo tee -a /home/ubuntu/.profile
 echo "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre/" | sudo tee -a /home/ubuntu/hadoop/etc/hadoop/hadoop-env.sh
 
 # On each node update home/ubuntu/hadoop/etc/hadoop/core-site.xml you want to set the NameNode location to HOSTNAME on port 9000
