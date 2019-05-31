@@ -7,6 +7,5 @@ cd ~
 wget http://apache.mirrors.spacedump.net/spark/spark-2.4.3/spark-2.4.3-bin-hadoop2.7.tgz
 tar -zxvf spark-2.4.3-bin-hadoop2.7.tgz
 echo "export SPARK_HOME=~/spark-2.4.3-bin-hadoop2.7" >> ~/.bashrc
-source ~/.bashrc
-cd ~/spark-2.4.3-bin-hadoop2.7/
+sourscd ~/spark-2.4.3-bin-hadoop2.7/
 ~/spark-2.4.3-bin-hadoop2.7/sbin/start-master.sh
