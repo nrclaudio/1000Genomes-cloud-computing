@@ -38,9 +38,8 @@ start = time.perf_counter()
 lsttpl = pair_3.collect()
 
 with open('result.txt', 'w') as f:
-    for item in lsttpl:
-        f.write("%s\n" % item)
-lsttpl = [('hey', 1), ('heyy', 2), ('heyyy', 3)]
+    for tpl in lsttpl:
+          f.write(' '.join(str(s) for s in tpl) + '\n')
 
 import matplotlib.pyplot as plt
 
