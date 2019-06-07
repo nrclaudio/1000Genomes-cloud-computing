@@ -37,7 +37,7 @@ import time
 start = time.perf_counter()
 lsttpl = pair_3.collect()
 
-with open('result.txt', 'w') as f:
+with open('result_1worker_1file.txt', 'w') as f:
     for tpl in lsttpl:
           f.write(' '.join(str(s) for s in tpl) + '\n')
 
@@ -49,11 +49,21 @@ for tpl in lsttpl:
     kmers.append(tpl[0])
     counts.append(int(tpl[1]))
 
-plt.bar(kmers, counts, align='center')
+plt.bar(kmers, counts, align = 'center')
 end = time.perf_counter()
 plt.xticks(kmers)
+plt.grid()
+plt.gca().margins(x=0)
+plt.gcf().canvas.draw()
+tl = plt.gca().get_xticklabels()
+maxsize = max([t.get_window_extent().width for t in tl])
+m = 0.2 # inch margin
+s = maxsize/plt.gcf().dpi*N+2*m
+margin = m/plt.gcf().get_size_inches()[0]
+plt.gcf().subplots_adjust(left=margin, right=1.-margin)
+plt.gcf().set_size_inches(s, plt.gcf().get_size_inches()[1])
 plt.ylabel('Kmer count')
 plt.xlabel('Kmers')
-plt.title('Kmer count in the human genome. Elapsed time: %.1f [min]' % ((end - start) / 60))
-plt.savefig('kmercount.png')
+plt.title('Kmer count in the human genome. Elapsed time: %.1f [min]' % ((end-start)/60))
+plt.savefig('kmercount_1worker_1file.png')
 spark_context.stop()
