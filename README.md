@@ -2,4 +2,4 @@
 
 ## Group 13 and 20
 
-Cloud-based k-mer count of human genome datasets
+Cloud-based k-mer count human genome data
